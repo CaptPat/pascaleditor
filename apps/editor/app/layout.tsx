@@ -30,6 +30,7 @@ export default function RootLayout({
     <html
       className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} ${barlow.variable}`}
       lang="en"
+      suppressHydrationWarning
     >
       <head>
         {process.env.NODE_ENV === 'development' && (
