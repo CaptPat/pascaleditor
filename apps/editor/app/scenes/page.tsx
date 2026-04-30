@@ -1,6 +1,10 @@
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { CreateSceneButton } from '@/components/save-button'
+import {
+  ExportSceneButton,
+  ImportSceneButton,
+} from '@/components/scene-export-import-buttons'
 import type { SceneMeta } from '@/components/scene-loader'
 
 export const dynamic = 'force-dynamic'
@@ -58,7 +62,10 @@ export default async function ScenesPage() {
             <span className="text-muted-foreground">/</span>
             <span className="font-medium text-foreground">Scenes</span>
           </nav>
-          <CreateSceneButton />
+          <div className="flex items-center gap-3">
+            <ImportSceneButton />
+            <CreateSceneButton />
+          </div>
         </div>
       </header>
 
@@ -73,16 +80,17 @@ export default async function ScenesPage() {
         {scenes.length === 0 ? (
           <div className="rounded-xl border border-border/60 border-dashed bg-background p-12 text-center">
             <p className="text-muted-foreground text-sm">You haven&apos;t saved any scenes yet.</p>
-            <div className="mt-4 flex justify-center">
+            <div className="mt-4 flex justify-center gap-3">
+              <ImportSceneButton />
               <CreateSceneButton />
             </div>
           </div>
         ) : (
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {scenes.map((scene) => (
-              <li key={scene.id}>
+              <li className="group relative" key={scene.id}>
                 <Link
-                  className="group block rounded-xl border border-border/60 bg-background p-4 transition-colors hover:border-border hover:bg-accent/30"
+                  className="block rounded-xl border border-border/60 bg-background p-4 transition-colors hover:border-border hover:bg-accent/30"
                   href={`/scene/${scene.id}`}
                 >
                   <div className="flex aspect-video items-center justify-center overflow-hidden rounded-lg bg-accent/30">
@@ -107,6 +115,11 @@ export default async function ScenesPage() {
                     </div>
                   </div>
                 </Link>
+                <ExportSceneButton
+                  className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100"
+                  name={scene.name}
+                  sceneId={scene.id}
+                />
               </li>
             ))}
           </ul>
