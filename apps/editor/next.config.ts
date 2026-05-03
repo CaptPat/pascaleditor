@@ -1,6 +1,13 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  // Emit a self-contained server bundle so the production Docker image
+  // can run a slim runtime (node:22-alpine) without dragging the full
+  // monorepo node_modules. See Dockerfile at the repo root.
+  output: 'standalone',
+  // Standalone build needs to know it's tracing files from the monorepo
+  // root, not just apps/editor — so include workspace package code.
+  outputFileTracingRoot: require('node:path').join(__dirname, '../../'),
   typescript: {
     ignoreBuildErrors: true,
   },

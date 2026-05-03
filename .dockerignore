@@ -1,0 +1,50 @@
+# Don't ship dev-time / build-time clutter into the Docker context.
+
+# Node / Bun module trees (rebuilt inside Dockerfile)
+node_modules
+**/node_modules
+
+# Turborepo + Next.js build outputs (rebuilt inside Dockerfile)
+.turbo
+**/.turbo
+.next
+**/.next
+out
+**/out
+dist
+**/dist
+
+# Git / VCS
+.git
+.gitignore
+.gitattributes
+
+# CI / dev tooling
+.github
+.vscode
+.idea
+
+# Environment files (use container env or compose env_file at runtime)
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
+!.env.example
+!**/.env.example
+
+# Logs / OS noise
+*.log
+**/*.log
+.DS_Store
+Thumbs.db
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+
+# Docker self
+Dockerfile
+.dockerignore
