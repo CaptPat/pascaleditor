@@ -27,7 +27,12 @@ FROM oven/bun:${BUN_VERSION}-alpine AS deps
 WORKDIR /repo
 COPY --from=pruner /repo/out/json/ ./
 COPY --from=pruner /repo/out/bun.lock ./bun.lock
-RUN bun install --frozen-lockfile
+# Note: --frozen-lockfile rejected because turbo prune does not perfectly
+# trim bun.lock to match the pruned package.jsons (orphan entries remain
+# for packages outside apps/editor's dependency closure). Allow bun to
+# resolve from the pruned set instead. For a fork-deploy build pipeline,
+# this trade-off is acceptable.
+RUN bun install
 
 # ---------- builder stage: full source + build ----------
 FROM oven/bun:${BUN_VERSION}-alpine AS builder
